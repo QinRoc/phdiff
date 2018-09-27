@@ -67,4 +67,9 @@ class Configuration(val settings: Settings, val system2: System2) {
     }
 
   }
+
+  override fun toString(): String {
+    return "Configuration(settings=$settings, system2=$system2)"
+  }
+
 }

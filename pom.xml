@@ -6,7 +6,7 @@
 
   <groupId>io.nthienan</groupId>
   <artifactId>phdiff</artifactId>
-  <version>0.1.1</version>
+  <version>0.3</version>
   <!-- This is important for sonar-packaging-maven-plugin -->
   <packaging>sonar-plugin</packaging>
 
@@ -19,25 +19,34 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
   <developers>
     <developer>
       <id>nthienan</id>
       <name>An Nguyen</name>
       <email>nthienan.it@gmail.com</email>
     </developer>
+    <developer>
+      <id>QinRoc</id>
+      <name>Qin Peng</name>
+      <email>qinrocdev@gmail.com</email>
+    </developer>
   </developers>
-  <url>https://github.com/thienan93/phdiff</url>
+  <url>https://github.com/QinRoc/phdiff</url>
   <issueManagement>
-    <url>https://github.com/thienan93/phdiff/issues</url>
+    <url>https://github.com/QinRoc/phdiff/issues</url>
   </issueManagement>
   <scm>
-    <url>https://github.com/thienan93/phdiff</url>
-    <connection>scm:git:https://github.com/thienan93/phdiff/issues</connection>
+    <url>https://github.com/QinRoc/phdiff</url>
+    <connection>scm:git:https://github.com/QinRoc/phdiff/issues</connection>
   </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <!-- Minimal version of SonarQube to support -->
+    <!--    last version is 7.3-->
     <sonar.apiVersion>5.6</sonar.apiVersion>
+    <!-- SonarQube 5.6 does not support plugins compiled for Java 7. -->
     <jdk.min.version>1.8</jdk.min.version>
     <kotlin.version>1.1.3-2</kotlin.version>
   </properties>
@@ -51,6 +60,7 @@
       <!-- Mandatory scope -->
       <scope>provided</scope>
     </dependency>
+
     <dependency>
       <!-- packaged with the plugin -->
       <groupId>commons-lang</groupId>
@@ -114,7 +124,7 @@
       <plugin>
         <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.16</version>
+        <version>1.18.0.372</version>
         <extensions>true</extensions>
         <configuration>
           <!-- the entry-point class that extends org.sonar.api.SonarPlugin -->
@@ -122,6 +132,7 @@
           <!-- advanced properties can be set here -->
         </configuration>
       </plugin>
+
       <plugin>
         <!-- UTF-8 bundles are not supported by Java, so they must be converted durbuildReportuild -->
         <groupId>org.codehaus.mojo</groupId>
@@ -135,6 +146,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.jetbrains.kotlin</groupId>
         <artifactId>kotlin-maven-plugin</artifactId>
@@ -162,6 +174,7 @@
           </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

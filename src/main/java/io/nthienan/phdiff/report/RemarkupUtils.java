@@ -1,5 +1,7 @@
 package io.nthienan.phdiff.report;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.api.CoreProperties;
 import org.sonar.api.batch.BatchSide;
@@ -7,9 +9,8 @@ import org.sonar.api.batch.InstantiationStrategy;
 import org.sonar.api.batch.postjob.issue.PostJobIssue;
 import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.config.Settings;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 
 /**
  * Support Remarkup format <br\>
@@ -24,14 +25,26 @@ public class RemarkupUtils {
   private final String ruleUrlPrefix;
   private final String projectKey;
 
+  private static Logger log = Loggers.get(RemarkupUtils.class);
+
   public RemarkupUtils(Settings settings) {
+    log.info("initialize RemarkupUtils with settings={}", settings);
+
     // If server base URL was not configured in SQ server then is is better to take URL configured on batch side
-    String baseUrl = settings.hasKey(CoreProperties.SERVER_BASE_URL) ? settings.getString(CoreProperties.SERVER_BASE_URL) : settings.getString("sonar.host.url");
-    this.projectKey = settings.getString(CoreProperties.PROJECT_KEY_PROPERTY);
-    if (!baseUrl.endsWith("/")) {
+    String serverBaseUrl = settings.getString(CoreProperties.SERVER_BASE_URL);
+    log.debug("serverBaseUrl={}", serverBaseUrl);
+    String sonarHostUrl = settings.getString("sonar.host.url");
+    log.debug("sonarHostUrl={}", sonarHostUrl);
+    String baseUrl = settings.hasKey(CoreProperties.SERVER_BASE_URL) ? serverBaseUrl : sonarHostUrl;
+    log.debug("baseUrl={}", baseUrl);
+    if (baseUrl!=null&&!baseUrl.endsWith("/")) {
       baseUrl += "/";
     }
     this.ruleUrlPrefix = baseUrl;
+    log.info("ruleUrlPrefix={}", ruleUrlPrefix);
+
+    this.projectKey = settings.getString(CoreProperties.PROJECT_KEY_PROPERTY);
+    log.info("projectKey={}", projectKey);
   }
 
   public static String bold(String str) {
@@ -42,11 +55,11 @@ public class RemarkupUtils {
     return String.format("//%s//", str);
   }
 
-  public static String code(String str) {
+  private static String code(String str) {
     return String.format("`%s`", str);
   }
 
-  public static String icon(String icon, String color) {
+  private static String icon(String icon, String color) {
     String colorStr = "";
     if (StringUtils.isNotBlank(color)) {
       colorStr = "color=" + color;
@@ -54,14 +67,14 @@ public class RemarkupUtils {
     return String.format("{icon %s %s}", icon, colorStr);
   }
 
-  public static String link(String url, String title) {
+  private static String link(String url, String title) {
     if (StringUtils.isNotBlank(title)) {
       return String.format("[[%s|%s]]", url, title);
     }
     return url;
   }
 
-  public static String encodeForUrl(String url) {
+  private static String encodeForUrl(String url) {
     try {
       return URLEncoder.encode(url, "UTF-8");
     } catch (UnsupportedEncodingException e) {
@@ -91,7 +104,7 @@ public class RemarkupUtils {
     return result;
   }
 
-  public String source(String componentKey, int line) {
+  private String source(String componentKey, int line) {
     return String.format("%s - %s:",
       italics(String.valueOf(String.format("Line %s", line))),
       code(componentKey.replace(projectKey, "").substring(1)));
@@ -115,4 +128,11 @@ public class RemarkupUtils {
     );
   }
 
+  @Override
+  public String toString() {
+    return "RemarkupUtils{" +
+      "ruleUrlPrefix='" + ruleUrlPrefix + '\'' +
+      ", projectKey='" + projectKey + '\'' +
+      '}';
+  }
 }

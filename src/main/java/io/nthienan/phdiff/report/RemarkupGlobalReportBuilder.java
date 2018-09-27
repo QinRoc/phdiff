@@ -1,13 +1,14 @@
 package io.nthienan.phdiff.report;
 
+import static io.nthienan.phdiff.report.RemarkupUtils.bold;
+
+import java.util.Arrays;
 import org.sonar.api.batch.BatchSide;
 import org.sonar.api.batch.InstantiationStrategy;
 import org.sonar.api.batch.postjob.issue.PostJobIssue;
 import org.sonar.api.batch.rule.Severity;
-
-import java.util.Arrays;
-
-import static io.nthienan.phdiff.report.RemarkupUtils.bold;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 
 /**
  * Created on 12-Jul-17.
@@ -22,7 +23,10 @@ public class RemarkupGlobalReportBuilder implements GlobalReportBuilder {
   private StringBuilder sb = new StringBuilder();
   private int[] numberOfIssuesBySeverity = new int[Severity.values().length];
 
+  private static Logger log = Loggers.get(RemarkupGlobalReportBuilder.class);
+
   public RemarkupGlobalReportBuilder(RemarkupUtils remarkupUtils) {
+    log.info("initialize RemarkupGlobalReportBuilder with remarkupUtils={}",remarkupUtils);
     this.remarkupUtils = remarkupUtils;
   }
 

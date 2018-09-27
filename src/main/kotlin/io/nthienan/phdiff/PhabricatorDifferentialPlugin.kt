@@ -7,6 +7,9 @@ import org.sonar.api.Plugin
 import org.sonar.api.Properties
 import org.sonar.api.Property
 import org.sonar.api.PropertyType
+import org.sonar.api.utils.log.Loggers
+
+
 
 /**
  * Created on 29-Jul-17.
@@ -34,7 +37,11 @@ import org.sonar.api.PropertyType
     global = false
   )
 )
+
 class PhabricatorDifferentialPlugin : Plugin {
+
+  private val log = Loggers.get(PhabricatorDifferentialPlugin::class.java)
+
   companion object {
     const val PHABRICATOR_URL = "sonar.phdiff.phabricatorUrl"
     const val DIFF_ID = "sonar.phdiff.diffId"
@@ -42,12 +49,16 @@ class PhabricatorDifferentialPlugin : Plugin {
   }
 
   override fun define(context: Plugin.Context?) {
+    log.debug("---add context {} start---",context.toString())
+
     context?.addExtensions(listOf(
       PhabricatorDifferentialPostJob::class.java,
       Configuration::class.java,
       RemarkupGlobalReportBuilder::class.java,
       RemarkupUtils::class.java,
       RemarkupInlineReportBuilder::class.java))
+
+    log.debug("---add context {} success!---",context.toString())
   }
 
 }
