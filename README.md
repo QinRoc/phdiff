@@ -99,6 +99,11 @@ If your Jenkins instance is exposed to the internet, make sure to install the [B
 - Gradle: `gradle sonarqube -Dsonar.analysis.mode=preview -Dsonar.phdiff.diffId=<your-diff-id>`
 - Maven: `mvn sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.phdiff.diffId=<your-diff-id>`
 
+### How to dev Sonar Extension
+[Sonar Extension Guide](https://docs.sonarqube.org/display/DEV/Getting+Started)
+- [Example plugin](https://github.com/SonarSource/sonar-custom-plugin-example)
+- [Adding Hooks](https://docs.sonarqube.org/display/DEV/Adding+Hooks)
+
 ### Contribute
 Please open all pull requests and issues against [https://github.com/thienan93/phdiff](https://github.com/thienan93/phdiff)
 
